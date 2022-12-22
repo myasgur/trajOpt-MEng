@@ -1,10 +1,10 @@
-function dx_correction = HALOcorrections_z_dy(Y_T2, STM_T2, mu) 
+function dz_correction = HALOcorrections_z_dy(Y_T2, STM_T2, mu) 
 % INPUT:
 %       Y_T2 = state vector at t = T/2 (y=0 crossing) (6x1)
 %     STM_T2 = state transition matrix at t = T/2 (6x6)
 %         mu = mass parameter
 % OUTPUT:
-%       dx_correction = correction to x and dy to trend towards
+%       dz_correction = correction to z and dy to trend towards
 %                       periodic orbit (2x1)
 %
 
@@ -23,8 +23,8 @@ A = ([STM_T2(4,3), STM_T2(4,5); STM_T2(6,3), STM_T2(6,5)]- ...
 B = [-dx; -dz];
 % Calculates the corrections and sets them to return. 
 if abs(det(A)) <= eps(1)
-    dx_correction = [0;0];
+    dz_correction = [0;0];
 else
-    dx_correction = A\B; % Return del_z and del_dy
+    dz_correction = A\B; % Return del_z and del_dy
 end
 end
