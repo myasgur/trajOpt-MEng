@@ -3,4 +3,3 @@ The code here is used to generate perfectly periodic halo orbits given x- and z-
 
 I have optimized and extended Ethan's code to generate periodic halo orbits around all of the collinear Lagrange points, not just L1. I also incorporated checks to deal with numerical instabilities, such as inversion of singular matrices and infinite while loops.
 
-## Directory
