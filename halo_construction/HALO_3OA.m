@@ -1,15 +1,15 @@
-function InitialConditions = HALO_3OA(mu, Ax, Az, ne, m,Lpoint) % Ax and Az is in km
+function InitialConditions = HALO_3OA(mu, Ax, Az, nm, m,Lpoint) % Ax and Az is in km
 %% Get L points
 Ls = getLpoints(mu);
 L1 = Ls(1); L2 = Ls(2); L3 = Ls(3);
 L = Ls(Lpoint);
 %% Analytic variables For Richardson Analytic Construction
 syms lam
-au = 149597870.700; % km
-re(1:2) = abs(au*(1-Ls(1:2)));
-re(3) = au*(-L3);
-gam(1) = 1-mu-L1 ;
-gam(2) = L2-(1-mu);
+% au = 149597870.700; % km
+am = 384400; %km
+re(1:2) = abs(am*(1-Ls(1:2)));
+re(3) = am*(-L3);
+gam(1:2) = L2-(1-mu);
 gam(3) = abs(L3+mu);
 
 c = zeros(4,3);
@@ -107,9 +107,9 @@ w = 1 + s1(1,:).*(Ax^2) + s2(1,:).*(Az^2);
 x = zeros(1,3); y = zeros(1,3); z = zeros(1,3);
 dx = zeros(1,3); dy = zeros(1,3); dz = zeros(1,3);
 i = 1; 
-for t = 0:5*24*60*60:180*24*60*60
+for t = 0:60*60:30*24*60*60
     % Time non-dimensionalizing
-    s = ne*t;
+    s = nm*t;
     tau = w*s;
     tau1 = lambda(1,:).*tau + PHI;
     x(i,:) = a21(1,:).*Ax.^2 + a22(1,:).*Az.^2 - Ax.*cos(tau1) + ...
@@ -146,43 +146,43 @@ if Plotter == 1
     legend(['dx'; 'dy'; 'dz'])
 
     figure(4)
-    plot3(L*au+re.*x(:,Lpoint),re.*y(:,Lpoint),re.*z(:,Lpoint), 'k' )
-    hold on; axis square; grid on
-    plot((1-mu)*au,(0),'b*','LineWidth',4);
-    plot(L*au,0,'kx')
+    plot3(L+x(:,Lpoint),y(:,Lpoint),z(:,Lpoint), 'k' )
+    hold on; axis equal; grid on
+    plot3(1-mu,0,0,'b*','LineWidth',4); plot3(-mu,0,0,'b*','LineWidth',4)
+    plot3(L,0,0,'kx')
     xlabel('x');ylabel('y');zlabel('z')
 
 
     figure(2)
-    plot(re.*x(:,Lpoint),re.*z(:,Lpoint), 'k')
+    plot(x(:,Lpoint),z(:,Lpoint), 'k')
     hold on; axis equal; grid on
-    plot((1-mu),(0),'b*','LineWidth',4);
+    plot(1-mu,0,'b*','LineWidth',4); plot(-mu,0,'b*','LineWidth',4)
     plot(0,0,'kx')
     xlabel('x');ylabel('z');
 
     figure(3)
-    plot(re*x(:,Lpoint),re*y(:,Lpoint), 'k')
+    plot(x(:,Lpoint),y(:,Lpoint), 'k')
     hold on; axis equal; grid on
-    plot((1-mu),(0),'b*','LineWidth',4); %plot((-mu),(0),'b*','LineWidth',4)
+    plot(1-mu,0,'b*','LineWidth',4); plot(-mu,0,'b*','LineWidth',4)
     plot(0,0,'kx')
     xlabel('x');ylabel('y');
 
     figure(1) % y-z
-    plot(y(:,Lpoint)*re,z(:,Lpoint)*re,'k')
+    plot(y(:,Lpoint),z(:,Lpoint),'k')
     hold on; axis equal; grid on
     plot(0,0,'kx')
     xlabel('y');ylabel('z');
     
     % General Plot Lims (If wanted)
-    axisdiv = 5*10^5;
+    axisdiv = 1;
     xlim([-2*axisdiv 2*axisdiv]); xticks([-2*axisdiv -axisdiv 0 axisdiv 2*axisdiv])
     ylim([-2*axisdiv 2*axisdiv]); yticks([-2*axisdiv -axisdiv 0 axisdiv 2*axisdiv])
 end
 %% Return Prints
 fprintf('x0 = %3.3f\n', x(1,Lpoint)*re)
 fprintf('z0 = %3.3f\n', z(1,Lpoint)*re)
-fprintf('dy0= %3.3f\n', dy(1,Lpoint)*re*ne)
+fprintf('dy0= %3.3f\n', dy(1,Lpoint)*re*nm)
 fprintf('Finished 3rd Order Approximation!\n')
 
-InitialConditions = [x(1,Lpoint)*re; 0; z(1,Lpoint)*re; 0; dy(1,Lpoint)*re*ne; 0];
+InitialConditions = [x(1,Lpoint)*re; 0; z(1,Lpoint)*re; 0; dy(1,Lpoint)*re*nm; 0];
 end
