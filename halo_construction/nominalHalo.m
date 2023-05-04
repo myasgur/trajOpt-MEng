@@ -12,7 +12,7 @@ function [halo] = nominalHalo(mu,Lpoint,Ax,Az,m,plt)
 %
 % EXAMPLE:
 %     halo = nominalHalo(3.0035e-6,2,2.5e5,4.2e5,1,1);
-%     halo = nominalHalo(0.012153619140872,1,3.2e4,4.9e4,1,1);
+%     halo = nominalHalo(0.012153619140872,1,1e4,9e3,1,1);
 %%
 clc; close all
 I6 = eye(6); Io = [I6(:,1); I6(:,2); I6(:,3); I6(:,4); I6(:,5); I6(:,6)];

@@ -13,7 +13,7 @@ function z = EnergyOptCost(x)
 global T_max c epsilon 
 global t0 tf r0 v0 m0 l0 rf vf
 
-pf = 100; % penalty factor
+W = diag([10 10 10 1 1 1 1]); %weighting matrix
 
 %% Initial Costate Guess (Search Variables)
 lams = psoSearchVars(x);
@@ -67,7 +67,7 @@ phi = [rdiff;vdiff;lm(end)];
 if length(t) == 1
     z = inf;
 else
-    z = T_max/c*trapz(t,u.^2) + pf*(phi)'*phi;
+    z = (phi)'*W*phi;
 end
 
 end

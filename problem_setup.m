@@ -99,7 +99,7 @@ halo=load('halo.mat').halo;
 itarg = 15004; % index of target state out of saved halo [r,v]
 
 % choose to target either halo (0) or stable manifold (1)
-target = 0;
+target = 1;
 
 switch target
     case 0
