@@ -12,15 +12,18 @@ nVar = 7;                       % Number of Unknown (Decision) Variables
 
 VarSize = [1 nVar];             % Matrix Size of Decision Variables
 
-VarMin = zeros(VarSize); % Lower Bounds of Decision Variables
-VarMax = ones(VarSize);  % Upper Bounds of Decision Variables
+VarMin = [-100 -100 -100 -10 -10 -10  0];  % Lower Bounds of Decision Variables
+VarMax = [ 100  100  100  10  10  10 10];  % Upper Bounds of Decision Variables
+
+VarMinGuess = [-40 -40 -40 -2 -2 -2 0];  % Lower Bounds of Decision Variable Guesses
+VarMaxGuess = [ 40  40  40  2  2  2 2];  % Upper Bounds of Decision Variable Guesses
 
 %% Parameters of PSO
 
 MaxIt = 1000;   % Maximum Number of Iterations
 MaxRuns = 100;  % Maximum Number of Runs
 
-nPop = 20;      % Population (Swarm) Size
+nPop = 250;      % Population (Swarm) Size
 
 wmin = 0.4;     % Minimum Inertia Coefficient
 wmax = 0.9;     % Maximum Inertia Coefficient
@@ -54,7 +57,7 @@ empty_particle.Best.Cost = [];
 
         % Generate Random Solution
         for j = 1:nVar
-            particle(i).Position(j) = unifrnd(VarMin(j),VarMax(j),1);
+            particle(i).Position(j) = unifrnd(VarMinGuess(j),VarMaxGuess(j),1);
         end
 
         % Initialize Velocity
@@ -96,8 +99,8 @@ for k = 1:MaxRuns
                 + c1*rand(VarSize).*(particle(i).Best.Position - particle(i).Position)...
                 + c2*rand(VarSize).*(GlobalBest.Position - particle(i).Position);
 
-            % Ensure Velocity Is In Range [-Vmax Vmax]
-            particle(i).Velocity = min(max(particle(i).Velocity,-Vmax),Vmax);
+            % % Ensure Velocity Is In Range [-Vmax Vmax]
+            % particle(i).Velocity = min(max(particle(i).Velocity,-Vmax),Vmax);
 
             % Update Position
             particle(i).Position = particle(i).Position + particle(i).Velocity;
@@ -135,7 +138,7 @@ for k = 1:MaxRuns
 
         if it>1 && BestCosts(it)<BestCosts(it-1)
             % Plot the Global Best Trajectory for the Current Iteration
-            lams = psoSearchVars(GlobalBest.Position);
+            lams = GlobalBest.Position(:);
             y0 = [r0;v0;m0;lams]; % initial conditions
             opts = odeset('RelTol',1e-10,'AbsTol',1e-10); % integration options
             [t,y]=ode78(@cr3bp_EOM,[t0 tf],y0,opts);

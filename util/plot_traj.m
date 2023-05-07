@@ -49,5 +49,5 @@ grid on
 % xlim([0.99 1.02])
 % xlim([0.9996 1.0004])
 axis equal
-
+set(gcf,'WindowStyle','Docked')
 end

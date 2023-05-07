@@ -52,7 +52,7 @@ mu = m2/MU;             % mass parameter
 
 % Nondimensionalized Metric Units
 
-T_max = 6/FU; %N/FU, max thrust of engine
+T_max = 10/FU; %N/FU, max thrust of engine
 Isp = 3000; % s, specific impulse of engine
 g0 = 9.8066e-3; % km/s^2, Earth gravitational acceleration at sea level
 c = (Isp*g0/VU); % effective velocity
@@ -72,7 +72,7 @@ Tp = 2*pi*sqrt(a^3/(1-mu)); % TU
 n = 2*pi/Tp; % rad/TU
 tp = 0.0*Tp;% TU
 
-maxdt = 6*86400/TU; % TU (days)
+maxdt = 8.64*86400/TU; % TU (days)
 t0 = 0;
 tf = t0 + maxdt;
 
@@ -99,7 +99,7 @@ halo=load('halo.mat').halo;
 itarg = 15004; % index of target state out of saved halo [r,v]
 
 % choose to target either halo (0) or stable manifold (1)
-target = 1;
+target = 0;
 
 switch target
     case 0

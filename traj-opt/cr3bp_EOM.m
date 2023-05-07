@@ -1,6 +1,6 @@
 function Ydot = cr3bp_EOM(t,Y)
 
-global mu T_max c epsilon rho l0
+global mu T_max c epsilon rho
 
 %%%%%%%%%%%%%%%%%% Unpack State %%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -12,7 +12,7 @@ vx = v(1); vy = v(2); vz = v(3);
 lvx = lv(1); lvy = lv(2); lvz = lv(3); lv_mag = norm(lv); 
 
 %%%%%%% Switching Function ( Throttle Control ) %%%%%%%%
-S = 1-c.*lv_mag./(l0*m) - lm/l0;
+S = 1-c.*lv_mag./(m) - lm;
 % u = 0.5*(1-tanh(S./rho)); %hyperbolic tangent smoothing
     
 if S > epsilon
